@@ -162,32 +162,33 @@ steps:
     displayName: "Rename files"
     condition: eq(variables['Build.Reason'], 'Manual')
 
-  - task: CopyFilesOverSSH@0
-    inputs:
-      sshEndpoint: 'Azure on Sandor'
-      sourceFolder: '$(Build.ArtifactStagingDirectory)/'
-      contents: '*.zip'
-      targetFolder: 'synergy-core/v1-core-$(buildType)/$(SYNERGY_VERSION)/$(SYNERGY_VERSION_STAGE)/$(SYNERGY_REVISION)/'
-      readyTimeout: '20000'
-    displayName: 'Send archives to sandor'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+# - task: CopyFilesOverSSH@0
+#     inputs:
+#       sshEndpoint: 'Azure on Sandor'
+#       sourceFolder: '$(Build.ArtifactStagingDirectory)/'
+#       contents: '*.zip'
+#       targetFolder: 'synergy-core/v1-core-$(buildType)/$(SYNERGY_VERSION)/$(SYNERGY_VERSION_STAGE)/$(SYNERGY_REVISION)/'
+#       readyTimeout: '20000'
+#     displayName: 'Send archives to sandor'
+#     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
 
-  - task: CopyFilesOverSSH@0
-    inputs:
-      sshEndpoint: 'Azure on Sandor'
-      sourceFolder: '$(Build.Repository.LocalPath)\build32\installer\bin\Release\'
-      contents: '*'
-      targetFolder: 'synergy-core/v1-core-$(buildType)/$(SYNERGY_VERSION)/$(SYNERGY_VERSION_STAGE)/$(SYNERGY_REVISION)/'
-      readyTimeout: '20000'
-    displayName: 'Send x86 Package to sandor'
-    condition: eq(variables['Build.Reason'], 'Manual')
+#   - task: CopyFilesOverSSH@0
+#     inputs:
+#       sshEndpoint: 'Azure on Sandor'
+#       sourceFolder: '$(Build.Repository.LocalPath)\build32\installer\bin\Release\'
+#       contents: '*'
+#       targetFolder: 'synergy-core/v1-core-$(buildType)/$(SYNERGY_VERSION)/$(SYNERGY_VERSION_STAGE)/$(SYNERGY_REVISION)/'
+#       readyTimeout: '20000'
+#     displayName: 'Send x86 Package to sandor'
+#     condition: eq(variables['Build.Reason'], 'Manual')
 
-  - task: CopyFilesOverSSH@0
-    inputs:
-      sshEndpoint: 'Azure on Sandor'
-      sourceFolder: '$(Build.Repository.LocalPath)\build64\installer\bin\Release\'
-      contents: '*'
-      targetFolder: 'synergy-core/v1-core-$(buildType)/$(SYNERGY_VERSION)/$(SYNERGY_VERSION_STAGE)/$(SYNERGY_REVISION)/'
-      readyTimeout: '20000'
-    displayName: 'Send x64 Package to sandor'
-    condition: eq(variables['Build.Reason'], 'Manual')
+#   - task: CopyFilesOverSSH@0
+#     inputs:
+#       sshEndpoint: 'Azure on Sandor'
+#       sourceFolder: '$(Build.Repository.LocalPath)\build64\installer\bin\Release\'
+#       contents: '*'
+#       targetFolder: 'synergy-core/v1-core-$(buildType)/$(SYNERGY_VERSION)/$(SYNERGY_VERSION_STAGE)/$(SYNERGY_REVISION)/'
+#       readyTimeout: '20000'
+#     displayName: 'Send x64 Package to sandor'
+#     condition: eq(variables['Build.Reason'], 'Manual')
+
