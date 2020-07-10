@@ -2,7 +2,7 @@ trigger:
 - master
 
 jobs:
-  - template: CI/job-doxygen.yml
+#  - template: CI/job-doxygen.yml
 
   - job: Windows
     strategy:
