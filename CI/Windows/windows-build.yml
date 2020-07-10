@@ -91,16 +91,6 @@ steps:
     env:
       ENV_BAT: $(ENV_BAT)
 
-  - task: codesigning@2
-    inputs:
-      secureFileId: 'WindowsSigningCert.pfx'
-      signCertPassword: '$(CODESIGN_PWD)'
-      files: '*\bin\Release\*.exe'
-      timeServer: 'http://timestamp.digicert.com'
-      hashingAlgorithm: 'SHA256'
-    displayName: "Signing Synergy binaries"
-    condition: eq(variables['Build.Reason'], 'Manual')
-
   - task: MSBuild@1
     inputs:
       solution: 'build64/installer/Synergy.sln'
@@ -126,16 +116,6 @@ steps:
     displayName: 'Making installer x86'
     env:
       QT_PATH: $(QT_BIN_PATH_32)
-
-  - task: codesigning@2
-    inputs:
-      secureFileId: 'WindowsSigningCert.pfx'
-      signCertPassword: '$(CODESIGN_PWD)'
-      files: '*\installer\bin\Release\Synergy.msi'
-      timeServer: 'http://timestamp.digicert.com'
-      hashingAlgorithm: 'SHA256'
-    displayName: "Signing installers"
-    condition: eq(variables['Build.Reason'], 'Manual')
 
   - task: ArchiveFiles@2
     inputs:
