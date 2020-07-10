@@ -162,6 +162,24 @@ steps:
     displayName: "Rename files"
     condition: eq(variables['Build.Reason'], 'Manual')
 
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.Repository.LocalPath)\build32\installer\bin\Release\'
+      ArtifactName: 'drop-exe'
+      publishLocation: 'Container'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.Repository.LocalPath)\build64\installer\bin\Release\'
+      ArtifactName: 'drop-exe64'
+      publishLocation: 'Container'
+
 # - task: CopyFilesOverSSH@0
 #     inputs:
 #       sshEndpoint: 'Azure on Sandor'
