@@ -2,100 +2,100 @@ trigger:
 - master
 
 jobs: 
-- job: LinuxRHEL
-  pool: 
-    vmImage: 'ubuntu-16.04'
-  strategy:
-    matrix:
-      centos7:
-        image: symless/centos-sudo:7
+# - job: LinuxRHEL
+#   pool: 
+#     vmImage: 'ubuntu-16.04'
+#   strategy:
+#     matrix:
+#       centos7:
+#         image: symless/centos-sudo:7
 
-  container: $[ variables['image'] ]
+#   container: $[ variables['image'] ]
 
-  steps:
-  - script: |
-      sudo yum -y update
-      sudo yum -y install epel-release boost-static git libXtst-devel qt5-qtbase-devel qt5-qtdeclarative-devel libcurl-devel openssl-devel avahi-compat-libdns_sd-devel autoconf automake gcc gcc-c++ make rpm-build redhat-rpm-config rpm-sign qt5-qttools-devel
-      sudo yum -y install cmake3 #for some reason this needs to be seperate otherwise it wont install
-    displayName: 'Install Pakages'
+#   steps:
+#   - script: |
+#       sudo yum -y update
+#       sudo yum -y install epel-release boost-static git libXtst-devel qt5-qtbase-devel qt5-qtdeclarative-devel libcurl-devel openssl-devel avahi-compat-libdns_sd-devel autoconf automake gcc gcc-c++ make rpm-build redhat-rpm-config rpm-sign qt5-qttools-devel
+#       sudo yum -y install cmake3 #for some reason this needs to be seperate otherwise it wont install
+#     displayName: 'Install Pakages'
     
-  - script: |
-      mkdir build
-      cd build
-      cmake3 ..
-      make
-    displayName: 'Build'
+#   - script: |
+#       mkdir build
+#       cd build
+#       cmake3 ..
+#       make
+#     displayName: 'Build'
 
-- job: LinuxDeb
-  pool: 
-    vmImage: 'ubuntu-16.04'
-  strategy:
-    matrix:
-      ubuntu16:
-        image: symless/ubuntu-sudo:16.04
-      ubuntu18:
-        image: symless/ubuntu-sudo:18.04
-      ubuntu19:
-        image: symless/ubuntu-sudo:19.04
-      debian9:
-        image: symless/debian-sudo:stretch
+# - job: LinuxDeb
+#   pool: 
+#     vmImage: 'ubuntu-16.04'
+#   strategy:
+#     matrix:
+#       ubuntu16:
+#         image: symless/ubuntu-sudo:16.04
+#       ubuntu18:
+#         image: symless/ubuntu-sudo:18.04
+#       ubuntu19:
+#         image: symless/ubuntu-sudo:19.04
+#       debian9:
+#         image: symless/debian-sudo:stretch
 
-  container: $[ variables['image'] ]
+#   container: $[ variables['image'] ]
 
-  steps:
-  - script: |
-      sudo ln -snf /usr/share/zoneinfo/Europe/London /etc/localtime
-      sudo bash -c "echo 'Europe/London' > /etc/timezone"
-    displayName: 'Sort out timezones for updates'
-  - script: |
-      sudo DEBIAN_FRONTEND=noninteractive 
-      sudo apt-get -y update
-      sudo apt-get -y upgrade
-      sudo apt-get -y install git cmake qtbase5-dev build-essential libx11-dev libxtst-dev libgl1-mesa-dev libssl-dev libavahi-compat-libdnssd-dev debhelper devscripts
-      sudo apt-get -y install qttools5-dev qttools5-dev-tools --no-install-recommends #These will try to install gnome if we allow dependancies
-    displayName: 'Install Pakages'
-  - script: |
-      mkdir build
-      cd build
-      cmake ..
-      make
-    displayName: 'Build'
+#   steps:
+#   - script: |
+#       sudo ln -snf /usr/share/zoneinfo/Europe/London /etc/localtime
+#       sudo bash -c "echo 'Europe/London' > /etc/timezone"
+#     displayName: 'Sort out timezones for updates'
+#   - script: |
+#       sudo DEBIAN_FRONTEND=noninteractive 
+#       sudo apt-get -y update
+#       sudo apt-get -y upgrade
+#       sudo apt-get -y install git cmake qtbase5-dev build-essential libx11-dev libxtst-dev libgl1-mesa-dev libssl-dev libavahi-compat-libdnssd-dev debhelper devscripts
+#       sudo apt-get -y install qttools5-dev qttools5-dev-tools --no-install-recommends #These will try to install gnome if we allow dependancies
+#     displayName: 'Install Pakages'
+#   - script: |
+#       mkdir build
+#       cd build
+#       cmake ..
+#       make
+#     displayName: 'Build'
 
-- job: MacOS
-  strategy:
-    matrix:
-      sierra:
-        image: macOS-10.13
-      mojave:
-        image: macOS-10.14
+# - job: MacOS
+#   strategy:
+#     matrix:
+#       sierra:
+#         image: macOS-10.13
+#       mojave:
+#         image: macOS-10.14
 
-  pool: 
-    vmImage: $[ variables['image'] ]
+#   pool: 
+#     vmImage: $[ variables['image'] ]
 
-  variables:
-    QT_PATH: '/usr/local/opt/qt/bin'
+#   variables:
+#     QT_PATH: '/usr/local/opt/qt/bin'
 
-  steps:
-  - task: CmdLine@2
-    inputs:
-      script: 'brew install qt'
-    displayName: 'Installing QT'
+#   steps:
+#   - task: CmdLine@2
+#     inputs:
+#       script: 'brew install qt'
+#     displayName: 'Installing QT'
 
-  - task: CmdLine@2
-    inputs:
-      script: |
-        export PATH="$(QT_PATH):$PATH"
-        mkdir build
-        cd build 
-        cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=10.12 -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_CONFIGURATION_TYPES=Release ..
-    displayName: 'Cmake'
+#   - task: CmdLine@2
+#     inputs:
+#       script: |
+#         export PATH="$(QT_PATH):$PATH"
+#         mkdir build
+#         cd build 
+#         cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=10.12 -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_CONFIGURATION_TYPES=Release ..
+#     displayName: 'Cmake'
 
-  - task: CmdLine@2
-    inputs:
-      script: |
-        cd build
-        make
-    displayName: 'Compiling'
+#   - task: CmdLine@2
+#     inputs:
+#       script: |
+#         cd build
+#         make
+#     displayName: 'Compiling'
 
 - job: Windows
   strategy:
